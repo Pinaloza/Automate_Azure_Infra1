@@ -71,7 +71,9 @@ post {
                 echo "Jenkins Build Success"
             }
     always {
+        node{
         cleanWs()
+        }
            }
     }
 }
