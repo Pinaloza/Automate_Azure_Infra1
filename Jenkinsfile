@@ -9,7 +9,7 @@ pipeline {
                 git 'https://github.com/Pinaloza/Automate_Azure_Infra1.git'
             }
         }
-        stage('azurelogin') {
+        stage('jenkins_login') {
             steps {
                 sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
             }
