@@ -1,15 +1,15 @@
 pipeline {
     agent any; 
     environment {
-       MY_CRED = credentials('azurelogin')
+       MY_CRED = credentials('jenkins_login')
     } 
     stages {
         stage('Git checkout'){
             steps {
-                git 'https://github.com/SaradaNidiganti/DemoJenkinsTerraform.git'
+                git 'https://github.com/Pinaloza/Automate_Azure_Infra1.git'
             }
         }
-        stage('azurelogin') {
+        stage('jenkins_login') {
             steps {
                 sh 'az login --service-principal -u $MY_CRED_CLIENT_ID -p $MY_CRED_CLIENT_SECRET -t $MY_CRED_TENANT_ID'
             }
@@ -33,7 +33,7 @@ pipeline {
         stage('Terraform Plan'){
             steps {
                     withCredentials([azureServicePrincipal(
-                    credentialsId: 'azurelogin',
+                    credentialsId: 'jenkins_login',
                     subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
                     clientIdVariable: 'ARM_CLIENT_ID',
                     clientSecretVariable: 'ARM_CLIENT_SECRET',
@@ -49,7 +49,7 @@ pipeline {
         stage('Terraform apply') {
             steps {
                 withCredentials([azureServicePrincipal(
-                credentialsId: 'azurelogin',
+                credentialsId: 'jenkins_login',
                 subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
                 clientIdVariable: 'ARM_CLIENT_ID',
                 clientSecretVariable: 'ARM_CLIENT_SECRET',
@@ -71,7 +71,7 @@ post {
                 echo "Jenkins Build Success"
             }
     always {
-        node('any') {
+        node {
         cleanWs()
         }
            }
